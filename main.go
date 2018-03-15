@@ -13,17 +13,16 @@ var (
 	duration = flag.Duration("duration", 5*time.Second, "total time to respond")
 	writes   = flag.Int("writes", 10, "number of writes to perform")
 	port     = flag.Int("port", 8080, "port to listen to")
-
-	writeInterval = *duration / time.Duration(*writes)
-	bytesPerWrite = len(response) / *writes
 )
 
 func slowHandler(w http.ResponseWriter, r *http.Request) {
 	var (
-		start int = 0
-		end   int = 0
-		n     int
-		err   error
+		writeInterval     = *duration / time.Duration(*writes)
+		bytesPerWrite     = len(response) / *writes
+		start         int = 0
+		end           int = 0
+		n             int
+		err           error
 	)
 
 	for i := 0; i < *writes; i++ {
@@ -64,6 +63,7 @@ func slowHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	flag.Parse()
 	http.HandleFunc("/", slowHandler)
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(*port), nil))
 }
