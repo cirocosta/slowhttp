@@ -38,6 +38,10 @@ func slowHandler(w http.ResponseWriter, r *http.Request) {
 		if n != bytesPerWrite {
 			log.Fatal(errors.New("wrote less than expected"))
 		}
+
+		w.(http.Flusher).Flush()
+
+		time.Sleep(writeInterval)
 	}
 
 	totalWritten := bytesPerWrite * (*writes)
