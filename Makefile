@@ -4,4 +4,7 @@ install:
 fmt:
 	go fmt ./...
 
-.PHONY: fmt build
+image:
+	docker build -t cirocosta/slowhttp .
+
+.PHONY: fmt build image
